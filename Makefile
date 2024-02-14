@@ -4,14 +4,11 @@ APPNAME := guitar-inventory-management-ui
 REQS := sassc msgfmt
 K := $(foreach r, ${REQS}, $(if $(shell command -v ${r} 2> /dev/null), '', $(error "${r} not installed")))
 
-VERSION := $(shell cat VERSION | tr -d "[:space:]")
-
 default: clean compile
 
 clean:
 	rm -Rf build/${APPNAME}*
-	rm -f public/css/main-*.css
-	cd public/css && sassc -t compact -m main.scss main-${VERSION}.css
+	rm -f main.css # Updated path to root directory
 
 compile:
-	cd public/css && sassc -t compact -m main.scss main-${VERSION}.css
+	sassc -t compact -m public/css/main.scss main.css # Updated output path to root directory

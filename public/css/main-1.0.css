@@ -1,2 +1,45 @@
+html { scroll-behavior: auto; padding: 0; margin: 0; }
+
+::-webkit-scrollbar { display: none; }
+
+::-webkit-scrollbar-thumb:hover { display: block; }
+
+::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.5); border-radius: 10px; }
+
+body { padding: 0; margin: 0; background-color: white; overflow-y: scroll; }
+
+header { font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: auto; font-size: 14px; text-align: center; width: 100%; position: fixed; z-index: 10; }
+
+.header-container { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 0 10rem; gap: 20px; }
+
+.title-container h1 { color: #c6bcbc; text-align: left; }
+
+.links-container { display: flex; justify-content: flex-end; gap: 20px; }
+
+.links-container a { color: #c6bcbc; text-decoration: none; }
+
+@media (max-width: 768px) { .header-container { grid-template-columns: 1fr; gap: 10px; } .title-container, .links-container { justify-content: center; text-align: center; } .links-container { flex-direction: column; } }
+
+@media (max-width: 480px) { .header-container { padding: 10px; } }
+
+.slide-window { position: relative; width: 100%; height: 100vh; background-color: #e7e7e7; transition: height 2s, transform 2s; }
+
+.slide-window .mySlides { display: none; width: 100vw; height: 100vh; transition: height 2s, transform 2s; }
+
+.slide-window .mySlides h1 { position: absolute; text-align: center; margin: 0 -4px; font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: auto; top: 0; padding: 20px; font-size: 12vw; }
+
+@media only screen and (min-width: 768px) { .slide-window .mySlides h1 { top: 50%; transform: translateY(-50%); font-size: 4vw; } }
+
+@media only screen and (max-width: 768px) { .slide-window .mySlides { height: 100vh; } }
+
+.slide-window .slide-buttons { background-color: rgba(47, 44, 44, 0.739); border-radius: 10px; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1; }
+
+.slide-window .slide-button { display: inline-block; width: 10px; height: 10px; margin: 0 5px; border-radius: 50%; background-color: white; cursor: pointer; transition: background-color 0.3s ease-in-out; }
+
+.slide-window .slide-button.active { background-color: black; }
+
+.slide1-h1 { color: #ecba88; }
+
+.responsive-image { width: 100%; height: 100%; /* Ensure the image covers the height of the container */ display: block; /* Ensure the image is treated as a block-level element */ object-fit: cover; /* Cover the container without distorting the image, cropping if necessary */ overflow: hidden; /* This applies to the container, not the image */ }
 
 /*# sourceMappingURL=main-1.0.css.map */

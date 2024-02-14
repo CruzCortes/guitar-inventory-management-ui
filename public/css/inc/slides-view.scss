@@ -1,0 +1,77 @@
+@import 'vars';
+.slide-window {
+  position: relative;
+  width: 100%;
+  height: 100vh; 
+  background-color: rgb(231, 231, 231);
+  transition: height 2s, transform 2s;
+
+  .mySlides {
+    display: none;
+    width: 100vw; 
+    height: 100vh; 
+    transition: height 2s, transform 2s;
+
+    h1 {
+      position: absolute;
+      text-align: center;
+      margin: 0 -4px;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-font-smoothing: auto;
+      top: 0;
+      padding: 20px;
+      font-size: 12vw;
+    }
+
+    @media only screen and (min-width: 768px) {
+      h1 {
+        top: 50%; 
+        transform: translateY(-50%);
+        font-size: 4vw;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .mySlides {
+      height: 100vh; 
+    }
+  }
+
+  .slide-buttons {
+    background-color: $nav-background-color;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .slide-button {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .slide-button.active {
+    background-color: black;
+  }
+}
+
+.slide1-h1 {
+  color: $slide-h1-color;
+}
+
+.responsive-image {
+    width: 100%;
+    height: 100%; /* Ensure the image covers the height of the container */
+    display: block; /* Ensure the image is treated as a block-level element */
+    object-fit: cover; /* Cover the container without distorting the image, cropping if necessary */
+    overflow: hidden; /* This applies to the container, not the image */
+}

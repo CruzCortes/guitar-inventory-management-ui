@@ -54,6 +54,10 @@ header {
         text-align: center;
     }
 
+    .title-container h1 {
+        text-align: center;
+    }
+
     .links-container {
         flex-direction: column; 
     }
@@ -62,5 +66,8 @@ header {
 @media (max-width: 480px) {
     .header-container {
         padding: 10px; 
+    }
+    .title-container{
+        text-align: center;
     }
 }

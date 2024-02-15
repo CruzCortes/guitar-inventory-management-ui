@@ -8,7 +8,6 @@ default: clean compile
 
 clean:
 	rm -Rf build/${APPNAME}*
-	rm -f main.css # Updated path to root directory
-
+	rm -f main.css 
 compile:
-	sassc -t compact -m public/css/main.scss main.css # Updated output path to root directory
+	sassc -t compact -m public/css/main.scss main.css 

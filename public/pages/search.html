@@ -1,29 +1,139 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Search</title>
-        <meta name="keywords" content="guitar-inventory-management-ui">
-        <meta name="author" content="Gonzalo Cruz Cortes">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../../main.css">
-    </head>
-
-    <header>
-        <div class="header-container">
-            <div class="title-container">
-                <a href="../../index.html" style="text-decoration: none; color: inherit;">
-                    <h1>Guitar Inventory<br>Management</h1>
-                </a>
-            </div>            
-            <div class="links-container">
-                <a href="about.html">About</a>
-                <a href="add.html">Add</a>
-                <a href="search.html">Search</a>
-            </div>
+<head>
+    <title>Search Guitars</title>
+    <meta name="keywords" content="guitar-inventory-management-ui">
+    <meta name="author" content="Gonzalo Cruz Cortes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../main.css">
+</head>
+<header>
+    <div class="header-container">
+        <div class="title-container">
+            <a href="../../index.html" style="text-decoration: none; color: inherit;">
+                <h1>Guitar Inventory<br>Management</h1>
+            </a>
+        </div>            
+        <div class="links-container">
+            <a href="about.html">About</a>
+            <a href="add.html">Add</a>
+            <a href="search.html">Search</a>
         </div>
-    </header>
-    
-    <body>
-    </body>
+    </div>
+</header>
 
+
+
+<body class="search-page">
+    <div class="main-content">
+        <p>Search for a guitar <br>
+            You can click "Search" with the fields empty to display all guitars.
+        </p>
+        <div class="split-view">
+            <div class="split left">
+                    <div class="input-container">
+                        <label>Serial number:</label>
+                        <input id="serialNumber" />
+                        <label>Builder:</label>
+                        <input id="builder" />
+                        <label>Model:</label>
+                        <input id="model" />
+                        <label>Type:</label>
+                        <input id="type" />
+                        <label>Back wood:</label>
+                        <input id="backWood" />
+                        <label>Top wood:</label>
+                        <input id="topWood" />
+                        <label>Price:</label>
+                        <input id="price" />
+                        <button onclick="search()">Search</button>
+                    </div>
+            </div>
+            <div class="split right">
+                    <div class="results-container">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Serial number</th>
+                                        <th>Builder</th>
+                                        <th>Model</th>
+                                        <th>Type</th>
+                                        <th>Back wood</th>
+                                        <th>Top wood</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="searchResult">
+                                    <!-- Dynamic rows will be added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>  
+        </div>
+    </div>
+
+
+
+
+    <script>
+        let guitars = [
+            { serialNumber: "12345", builder: "Fender", model: "Stratocaster", type: "Electric", backWood: "Alder", topWood: "Maple", price: "$999" },
+            { serialNumber: "23456", builder: "Gibson", model: "Les Paul", type: "Electric", backWood: "Mahogany", topWood: "Maple", price: "$2499" },
+            { serialNumber: "34567", builder: "Martin", model: "D-28", type: "Acoustic", backWood: "Rosewood", topWood: "Spruce", price: "$2999" },
+            { serialNumber: "45678", builder: "Taylor", model: "814ce", type: "Acoustic", backWood: "Rosewood", topWood: "Sitka Spruce", price: "$3499" },
+            { serialNumber: "56789", builder: "Ibanez", model: "RG550", type: "Electric", backWood: "Basswood", topWood: "Maple", price: "$999" },
+            { serialNumber: "67890", builder: "Fender", model: "Telecaster", type: "Electric", backWood: "Alder", topWood: "Maple", price: "$1200" },
+            { serialNumber: "78901", builder: "Gibson", model: "SG", type: "Electric", backWood: "Mahogany", topWood: "Rosewood", price: "$1500" },
+            { serialNumber: "89012", builder: "Yamaha", model: "FG800", type: "Acoustic", backWood: "Nato", topWood: "Spruce", price: "$200" },
+            { serialNumber: "90123", builder: "Epiphone", model: "Les Paul Standard", type: "Electric", backWood: "Mahogany", topWood: "Maple", price: "$499" },
+            { serialNumber: "01234", builder: "Martin", model: "D-18", type: "Acoustic", backWood: "Mahogany", topWood: "Spruce", price: "$2500" },
+            { serialNumber: "11223", builder: "Taylor", model: "GS Mini", type: "Acoustic", backWood: "Sapele", topWood: "Sitka Spruce", price: "$599" },
+            { serialNumber: "22334", builder: "Fender", model: "Stratocaster", type: "Electric", backWood: "Alder", topWood: "Rosewood", price: "$850" }, // Cheaper variant
+            { serialNumber: "33445", builder: "Gibson", model: "Les Paul", type: "Electric", backWood: "Mahogany", topWood: "Ebony", price: "$2200" }, // Special Edition
+            { serialNumber: "44556", builder: "Ibanez", model: "JEM777", type: "Electric", backWood: "Basswood", topWood: "Maple", price: "$2999" },
+            { serialNumber: "55667", builder: "PRS", model: "Custom 24", type: "Electric", backWood: "Mahogany", topWood: "Maple", price: "$3200" },
+            { serialNumber: "66778", builder: "Fender", model: "Jazzmaster", type: "Electric", backWood: "Alder", topWood: "Maple", price: "$1100" },
+            { serialNumber: "77889", builder: "Martin", model: "OM-28", type: "Acoustic", backWood: "Rosewood", topWood: "Spruce", price: "$3100" },
+            { serialNumber: "88990", builder: "Gibson", model: "Firebird", type: "Electric", backWood: "Mahogany", topWood: "Mahogany", price: "$1800" },
+            { serialNumber: "99011", builder: "Taylor", model: "322", type: "Acoustic", backWood: "Mahogany", topWood: "Blackwood", price: "$1800" },
+            { serialNumber: "09121", builder: "Ibanez", model: "Artcore", type: "Electric", backWood: "Maple", topWood: "Maple", price: "$650" }
+        ];
+
+        function search() {
+            let serialNumberInput = document.getElementById("serialNumber").value.toLowerCase();
+            let builderInput = document.getElementById("builder").value.toLowerCase();
+            let modelInput = document.getElementById("model").value.toLowerCase();
+            let typeInput = document.getElementById("type").value.toLowerCase();
+            let backWoodInput = document.getElementById("backWood").value.toLowerCase();
+            let topWoodInput = document.getElementById("topWood").value.toLowerCase();
+            let priceInput = document.getElementById("price").value.toLowerCase();
+
+            let table = document.getElementById("searchResult");
+            table.innerHTML = "";
+
+            for (let guitar of guitars) {
+                if ((serialNumberInput === "" || guitar.serialNumber.toLowerCase().includes(serialNumberInput)) &&
+                    (builderInput === "" || guitar.builder.toLowerCase().includes(builderInput)) &&
+                    (modelInput === "" || guitar.model.toLowerCase().includes(modelInput)) &&
+                    (typeInput === "" || guitar.type.toLowerCase().includes(typeInput)) &&
+                    (backWoodInput === "" || guitar.backWood.toLowerCase().includes(backWoodInput)) &&
+                    (topWoodInput === "" || guitar.topWood.toLowerCase().includes(topWoodInput)) &&
+                    (priceInput === "" || guitar.price.toLowerCase().includes(priceInput))) {
+
+                    let row = table.insertRow();
+                    row.insertCell(0).innerText = guitar.serialNumber;
+                    row.insertCell(1).innerText = guitar.builder;
+                    row.insertCell(2).innerText = guitar.model;
+                    row.insertCell(3).innerText = guitar.type;
+                    row.insertCell(4).innerText = guitar.backWood;
+                    row.insertCell(5).innerText = guitar.topWood;
+                    row.insertCell(6).innerText = guitar.price;
+                }
+            }
+        }
+    </script>
+    <script src="../js/header-size-calc.js"></script>
+</body>
 </html>

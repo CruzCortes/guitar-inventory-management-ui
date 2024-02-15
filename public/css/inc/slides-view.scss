@@ -70,8 +70,8 @@
 
 .responsive-image {
     width: 100%;
-    height: 100%; /* Ensure the image covers the height of the container */
-    display: block; /* Ensure the image is treated as a block-level element */
-    object-fit: cover; /* Cover the container without distorting the image, cropping if necessary */
-    overflow: hidden; /* This applies to the container, not the image */
+    height: 100%; 
+    display: block; 
+    object-fit: cover; 
+    overflow: hidden; 
 }

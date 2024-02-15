@@ -23,7 +23,49 @@
         </div>
     </header>
     
-    <body>
-    </body>
+    <body class="add-page">
+        <div class="main-content">
+            <div class="add-guitar">
+                <label>Serial number:</label>
+                <input id="guitarSerial" />
+                <label>Price:</label>
+                <input id="guitarPrice" />
+                <label>Builder:</label>
+                <input id="guitarBuilder" />
+                <label>Model:</label>
+                <input id="guitarModel" />
+                <label>Type:</label>
+                <input id="guitarType" />
+                <label>Back wood:</label>
+                <input id="guitarBackWood" />
+                <label>Top wood:</label>
+                <input id="guitarTopWood" />
+                <button onclick="addTheGuitar()">Add the guitar</button>
+            </div>
+        </div>
+        <script>
+            function addTheGuitar() {
+                let serial = document.getElementById("guitarSerial").value;
+                let price = document.getElementById("guitarPrice").value;
+                let builder = document.getElementById("guitarBuilder").value;
+                let model = document.getElementById("guitarModel").value;
+                let type = document.getElementById("guitarType").value;
+                let backWood = document.getElementById("guitarBackWood").value;
+                let topWood = document.getElementById("guitarTopWood").value;
 
+                let guitarData = {
+                    serialNumber: serial,
+                    price: price,
+                    builder: builder,
+                    model: model,
+                    type: type,
+                    backWood: backWood,
+                    topWood: topWood
+                };
+
+                alert("You entered: " + JSON.stringify(guitarData, null, 4));
+            }
+        </script>
+        <script src="../js/header-size-calc.js"></script>
+    </body>
 </html>

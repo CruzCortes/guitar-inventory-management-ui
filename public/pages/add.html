@@ -47,15 +47,17 @@
             </div>
         </div>
         <script>
-            function addTheGuitar() {
+            let host = "http://localhost:8080";
+            
+            async function addTheGuitar() {
                 let serial = document.getElementById("guitarSerial").value;
-                let price = document.getElementById("guitarPrice").value;
+                let price = parseFloat(document.getElementById("guitarPrice").value); // Ensure price is a float
                 let builder = document.getElementById("guitarBuilder").value;
                 let model = document.getElementById("guitarModel").value;
                 let type = document.getElementById("guitarType").value;
                 let backWood = document.getElementById("guitarBackWood").value;
                 let topWood = document.getElementById("guitarTopWood").value;
-
+        
                 let guitarData = {
                     serialNumber: serial,
                     price: price,
@@ -65,8 +67,30 @@
                     backWood: backWood,
                     topWood: topWood
                 };
-
-                alert("You entered: " + JSON.stringify(guitarData, null, 4));
+        
+                console.log("You entered:" + JSON.stringify(guitarData));
+        
+                let request = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(guitarData)
+                };
+        
+                try {
+                    let response = await fetch(host + "/inventory/add", request);
+                    if (response.ok) {
+                        alert("The guitar was added successfully!");
+                        console.log("The guitar was added successfully!");
+                    } else {
+                        console.error("Response status:", response.status);
+                        alert("Failed to add the guitar. Please try again.");
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert("Error adding guitar. Please check if the server is running.");
+                }
             }
         </script>
         <script src="../js/header-size-calc.js"></script>

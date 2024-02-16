@@ -1,98 +1,83 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Add</title>
-        <meta name="keywords" content="guitar-inventory-management-ui">
-        <meta name="author" content="Gonzalo Cruz Cortes">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../../main.css">
-    </head>
-
-    <header>
-        <div class="header-container">
-            <div class="title-container">
-                <a href="../../index.html" style="text-decoration: none; color: inherit;">
-                    <h1>Guitar Inventory<br>Management</h1>
-                </a>
-            </div>            
-            <div class="links-container">
-                <a href="about.html">About</a>
-                <a href="add.html">Add</a>
-                <a href="search.html">Search</a>
-            </div>
+<head>
+    <title>Add Guitar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../main.css">
+</head>
+<body class="add-page">
+    <div class="main-content">
+        <p>Add a guitar</p>
+        <div class="add-guitar">
+            <label>Serial number:</label>
+            <input id="guitarSerial" />
+            <label>Price:</label>
+            <input id="guitarPrice" type="number" min="0" step="any" />
+            <label>Builder:</label>
+            <input id="guitarBuilder" />
+            <label>Model:</label>
+            <input id="guitarModel" />
+            <label>Type:</label>
+            <input id="guitarType" />
+            <label>Back wood:</label>
+            <input id="guitarBackWood" />
+            <label>Top wood:</label>
+            <input id="guitarTopWood" />
+            <button onclick="addTheGuitar()">Add the guitar</button>
         </div>
-    </header>
-    
-    <body class="add-page">
-        <div class="main-content">
+    </div>
+    <script>
+        let host = "http://localhost:8080";
+        
+        async function addTheGuitar() {
+            let serial = document.getElementById("guitarSerial").value.trim();
+            let price = parseFloat(document.getElementById("guitarPrice").value); // Ensure price is a float
+            let builder = document.getElementById("guitarBuilder").value.trim().toUpperCase(); // Convert to upper case for enum comparison
+            let model = document.getElementById("guitarModel").value.trim();
+            let type = document.getElementById("guitarType").value.trim().toUpperCase(); // Convert to upper case for enum comparison
+            let backWood = document.getElementById("guitarBackWood").value.trim().toUpperCase(); // Convert to upper case for enum comparison
+            let topWood = document.getElementById("guitarTopWood").value.trim().toUpperCase(); // Convert to upper case for enum comparison
 
-            <p> Add a guitar </p>
-
-            <div class="add-guitar">
-                <label>Serial number:</label>
-                <input id="guitarSerial" />
-                <label>Price:</label>
-                <input id="guitarPrice" />
-                <label>Builder:</label>
-                <input id="guitarBuilder" />
-                <label>Model:</label>
-                <input id="guitarModel" />
-                <label>Type:</label>
-                <input id="guitarType" />
-                <label>Back wood:</label>
-                <input id="guitarBackWood" />
-                <label>Top wood:</label>
-                <input id="guitarTopWood" />
-                <button onclick="addTheGuitar()">Add the guitar</button>
-            </div>
-        </div>
-        <script>
-            let host = "http://localhost:8080";
-            
-            async function addTheGuitar() {
-                let serial = document.getElementById("guitarSerial").value;
-                let price = parseFloat(document.getElementById("guitarPrice").value); // Ensure price is a float
-                let builder = document.getElementById("guitarBuilder").value;
-                let model = document.getElementById("guitarModel").value;
-                let type = document.getElementById("guitarType").value;
-                let backWood = document.getElementById("guitarBackWood").value;
-                let topWood = document.getElementById("guitarTopWood").value;
-        
-                let guitarData = {
-                    serialNumber: serial,
-                    price: price,
-                    builder: builder,
-                    model: model,
-                    type: type,
-                    backWood: backWood,
-                    topWood: topWood
-                };
-        
-                console.log("You entered:" + JSON.stringify(guitarData));
-        
-                let request = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(guitarData)
-                };
-        
-                try {
-                    let response = await fetch(host + "/inventory/add", request);
-                    if (response.ok) {
-                        alert("The guitar was added successfully!");
-                        console.log("The guitar was added successfully!");
-                    } else {
-                        console.error("Response status:", response.status);
-                        alert("Failed to add the guitar. Please try again.");
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert("Error adding guitar. Please check if the server is running.");
-                }
+            // Basic front-end validation
+            if (!serial || isNaN(price) || !builder || !model || !type || !backWood || !topWood) {
+                alert("Please fill in all fields with valid values.");
+                return;
             }
-        </script>
-        <script src="../js/header-size-calc.js"></script>
-    </body>
+
+            let guitarData = {
+                serialNumber: serial,
+                price: isNaN(price) ? 0 : price,
+                builder: builder,
+                model: model,
+                type: type,
+                backWood: backWood,
+                topWood: topWood
+            };
+
+            console.log("You entered:" + JSON.stringify(guitarData));
+
+            let request = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(guitarData)
+            };
+
+            try {
+                let response = await fetch(host + "/inventory/add", request);
+                if (response.ok) {
+                    alert("The guitar was added successfully!");
+                    console.log("The guitar was added successfully!");
+                } else {
+                    console.error("Response status:", response.status);
+                    alert("Failed to add the guitar. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Error adding guitar. Please check if the server is running.");
+            }
+        }
+    </script>
+</body>
 </html>

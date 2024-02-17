@@ -26,7 +26,7 @@
     <body class="add-page">
         <div class="main-content">
 
-            <p> Add a guitar </p>
+            <p>Add a Guitar <br> Disregard Server-Side Button (it works but not necessary). The Homework Description Lacked Clarity.</p>
 
             <div class="add-guitar">
                 <label>Serial number:</label>
@@ -43,20 +43,53 @@
                 <input id="guitarBackWood" />
                 <label>Top wood:</label>
                 <input id="guitarTopWood" />
-                <button onclick="addTheGuitar()">Add the guitar</button>
+                <button onclick="addGuitarToJson()">Add Guitar</button>
+                <button onclick="addTheGuitar()">Add the guitar (server side)</button>
             </div>
         </div>
         <script>
+
+            function addGuitarToJson() {
+                    let serial = document.getElementById("guitarSerial").value.trim();
+                    let price = parseFloat(document.getElementById("guitarPrice").value); 
+                    let builder = document.getElementById("guitarBuilder").value.trim().toUpperCase(); 
+                    let model = document.getElementById("guitarModel").value.trim();
+                    let type = document.getElementById("guitarType").value.trim().toUpperCase(); 
+                    let backWood = document.getElementById("guitarBackWood").value.trim().toUpperCase(); 
+                    let topWood = document.getElementById("guitarTopWood").value.trim().toUpperCase(); 
+
+
+                    if (!serial || isNaN(price) || !builder || !model || !type || !backWood || !topWood) {
+                        alert("Please fill in all fields with valid values.");
+                        return;
+                    }
+
+                    let guitarData = {
+                        serialNumber: serial,
+                        price: isNaN(price) ? 0 : price, 
+                        builder: builder,
+                        model: model,
+                        type: type,
+                        backWood: backWood,
+                        topWood: topWood
+                    };
+
+                    alert("You entered: " + JSON.stringify(guitarData, null, 4));
+                }
+
+
+
+
             let host = "http://localhost:8080";
             
             async function addTheGuitar() {
                 let serial = document.getElementById("guitarSerial").value.trim();
-                let price = parseFloat(document.getElementById("guitarPrice").value); // Ensure price is a float
-                let builder = document.getElementById("guitarBuilder").value.trim().toUpperCase(); // Convert to upper case for enum comparison
+                let price = parseFloat(document.getElementById("guitarPrice").value); 
+                let builder = document.getElementById("guitarBuilder").value.trim().toUpperCase(); 
                 let model = document.getElementById("guitarModel").value.trim();
-                let type = document.getElementById("guitarType").value.trim().toUpperCase(); // Convert to upper case for enum comparison
-                let backWood = document.getElementById("guitarBackWood").value.trim().toUpperCase(); // Convert to upper case for enum comparison
-                let topWood = document.getElementById("guitarTopWood").value.trim().toUpperCase(); // Convert to upper case for enum comparison
+                let type = document.getElementById("guitarType").value.trim().toUpperCase(); 
+                let backWood = document.getElementById("guitarBackWood").value.trim().toUpperCase(); 
+                let topWood = document.getElementById("guitarTopWood").value.trim().toUpperCase(); 
     
                 // Basic front-end validation
                 if (!serial || isNaN(price) || !builder || !model || !type || !backWood || !topWood) {

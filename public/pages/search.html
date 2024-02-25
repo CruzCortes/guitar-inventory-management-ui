@@ -68,6 +68,7 @@
                                     <!-- Dynamic rows will be added here -->
                                 </tbody>
                             </table>
+                            <div id="noResults" style="display: none; text-align: center;"> <h1>No results found.</h1></div>
                         </div>
                     </div>
             </div>  
@@ -78,62 +79,69 @@
 
 
     <script>
-        let guitars = [
-            { serialNumber: "12345", builder: "Fender", model: "Stratocaster", type: "Electric", backWood: "Alder", topWood: "Maple", price: "$999" },
-            { serialNumber: "23456", builder: "Gibson", model: "Les Paul", type: "Electric", backWood: "Mahogany", topWood: "Maple", price: "$2499" },
-            { serialNumber: "34567", builder: "Martin", model: "D-28", type: "Acoustic", backWood: "Rosewood", topWood: "Spruce", price: "$2999" },
-            { serialNumber: "45678", builder: "Taylor", model: "814ce", type: "Acoustic", backWood: "Rosewood", topWood: "Sitka Spruce", price: "$3499" },
-            { serialNumber: "56789", builder: "Ibanez", model: "RG550", type: "Electric", backWood: "Basswood", topWood: "Maple", price: "$999" },
-            { serialNumber: "67890", builder: "Fender", model: "Telecaster", type: "Electric", backWood: "Alder", topWood: "Maple", price: "$1200" },
-            { serialNumber: "78901", builder: "Gibson", model: "SG", type: "Electric", backWood: "Mahogany", topWood: "Rosewood", price: "$1500" },
-            { serialNumber: "89012", builder: "Yamaha", model: "FG800", type: "Acoustic", backWood: "Nato", topWood: "Spruce", price: "$200" },
-            { serialNumber: "90123", builder: "Epiphone", model: "Les Paul Standard", type: "Electric", backWood: "Mahogany", topWood: "Maple", price: "$499" },
-            { serialNumber: "01234", builder: "Martin", model: "D-18", type: "Acoustic", backWood: "Mahogany", topWood: "Spruce", price: "$2500" },
-            { serialNumber: "11223", builder: "Taylor", model: "GS Mini", type: "Acoustic", backWood: "Sapele", topWood: "Sitka Spruce", price: "$599" },
-            { serialNumber: "22334", builder: "Fender", model: "Stratocaster", type: "Electric", backWood: "Alder", topWood: "Rosewood", price: "$850" }, // Cheaper variant
-            { serialNumber: "33445", builder: "Gibson", model: "Les Paul", type: "Electric", backWood: "Mahogany", topWood: "Ebony", price: "$2200" }, // Special Edition
-            { serialNumber: "44556", builder: "Ibanez", model: "JEM777", type: "Electric", backWood: "Basswood", topWood: "Maple", price: "$2999" },
-            { serialNumber: "55667", builder: "PRS", model: "Custom 24", type: "Electric", backWood: "Mahogany", topWood: "Maple", price: "$3200" },
-            { serialNumber: "66778", builder: "Fender", model: "Jazzmaster", type: "Electric", backWood: "Alder", topWood: "Maple", price: "$1100" },
-            { serialNumber: "77889", builder: "Martin", model: "OM-28", type: "Acoustic", backWood: "Rosewood", topWood: "Spruce", price: "$3100" },
-            { serialNumber: "88990", builder: "Gibson", model: "Firebird", type: "Electric", backWood: "Mahogany", topWood: "Mahogany", price: "$1800" },
-            { serialNumber: "99011", builder: "Taylor", model: "322", type: "Acoustic", backWood: "Mahogany", topWood: "Blackwood", price: "$1800" },
-            { serialNumber: "09121", builder: "Ibanez", model: "Artcore", type: "Electric", backWood: "Maple", topWood: "Maple", price: "$650" }
-        ];
-
-        function search() {
-            let serialNumberInput = document.getElementById("serialNumber").value.toLowerCase();
-            let builderInput = document.getElementById("builder").value.toLowerCase();
-            let modelInput = document.getElementById("model").value.toLowerCase();
-            let typeInput = document.getElementById("type").value.toLowerCase();
-            let backWoodInput = document.getElementById("backWood").value.toLowerCase();
-            let topWoodInput = document.getElementById("topWood").value.toLowerCase();
-            let priceInput = document.getElementById("price").value.toLowerCase();
-
+        let host = "http://localhost:8080";
+    
+        async function search() {
+            let serialNumberInput = document.getElementById("serialNumber").value.trim();
+            let builderInput = document.getElementById("builder").value.trim();
+            let modelInput = document.getElementById("model").value.trim();
+            let typeInput = document.getElementById("type").value.trim();
+            let backWoodInput = document.getElementById("backWood").value.trim();
+            let topWoodInput = document.getElementById("topWood").value.trim();
+            let priceInput = document.getElementById("price").value;
+    
+            let queryParams = [];
+            if (serialNumberInput) queryParams.push(`serialNumber=${encodeURIComponent(serialNumberInput)}`);
+            if (builderInput) queryParams.push(`builder=${encodeURIComponent(builderInput)}`);
+            if (modelInput) queryParams.push(`model=${encodeURIComponent(modelInput)}`);
+            if (typeInput) queryParams.push(`type=${encodeURIComponent(typeInput)}`);
+            if (backWoodInput) queryParams.push(`backWood=${encodeURIComponent(backWoodInput)}`);
+            if (topWoodInput) queryParams.push(`topWood=${encodeURIComponent(topWoodInput)}`);
+            if (priceInput) queryParams.push(`price=${encodeURIComponent(priceInput)}`);
+    
+            let queryURL = `${host}/inventory/search?${queryParams.join('&')}`;
+    
             let table = document.getElementById("searchResult");
             table.innerHTML = "";
-
-            for (let guitar of guitars) {
-                if ((serialNumberInput === "" || guitar.serialNumber.toLowerCase().includes(serialNumberInput)) &&
-                    (builderInput === "" || guitar.builder.toLowerCase().includes(builderInput)) &&
-                    (modelInput === "" || guitar.model.toLowerCase().includes(modelInput)) &&
-                    (typeInput === "" || guitar.type.toLowerCase().includes(typeInput)) &&
-                    (backWoodInput === "" || guitar.backWood.toLowerCase().includes(backWoodInput)) &&
-                    (topWoodInput === "" || guitar.topWood.toLowerCase().includes(topWoodInput)) &&
-                    (priceInput === "" || guitar.price.toLowerCase().includes(priceInput))) {
-
-                    let row = table.insertRow();
-                    row.insertCell(0).innerText = guitar.serialNumber;
-                    row.insertCell(1).innerText = guitar.builder;
-                    row.insertCell(2).innerText = guitar.model;
-                    row.insertCell(3).innerText = guitar.type;
-                    row.insertCell(4).innerText = guitar.backWood;
-                    row.insertCell(5).innerText = guitar.topWood;
-                    row.insertCell(6).innerText = guitar.price;
+    
+            try {
+                let response = await fetch(queryURL);
+                if (response.ok) {
+                    let guitars = await response.json();
+    
+                    if (guitars.length === 0) {
+                        document.getElementById("noResults").style.display = "block"; // Show "No results found"
+                    } else {
+                        document.getElementById("noResults").style.display = "none"; // Hide "No results found"
+                        guitars.forEach(guitar => {
+                            let row = table.insertRow();
+                            row.insertCell(0).innerText = guitar.serialNumber;
+                            row.insertCell(1).innerText = guitar.builder;
+                            row.insertCell(2).innerText = guitar.model;
+                            row.insertCell(3).innerText = guitar.type;
+                            row.insertCell(4).innerText = guitar.backWood;
+                            row.insertCell(5).innerText = guitar.topWood;
+                            row.insertCell(6).innerText = `$${guitar.price}`;
+                        });
+                    }
+                } else if (response.status === 500) {
+                    // Handle server errors related to input values
+                    document.getElementById("noResults").style.display = "block"; // Also show "No results found" for clarity
+                    alert("Invalid input values. Please ensure all input values are valid and try again.");
+                } else {
+                    console.log(`HTTP error! status: ${response.status}. Perhaps no results found.`);
                 }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                // Ensure "No results found" is not shown for network or unexpected server issues
+                alert('An error occurred while fetching the data. Please check your network connection and try again.');
             }
         }
     </script>
+    
+    
+
+    
     <script src="../js/header-size-calc.js"></script>
 </body>
 </html>

@@ -26,7 +26,7 @@
     <body class="add-page">
         <div class="main-content">
 
-            <p>Add a Guitar <br> Disregard Server-Side Button (it works but not necessary). The Homework Description Lacked Clarity.</p>
+            <p>Add a Guitar</p>
 
             <div class="add-guitar">
                 <label>Serial number:</label>
@@ -43,8 +43,10 @@
                 <input id="guitarBackWood" />
                 <label>Top wood:</label>
                 <input id="guitarTopWood" />
+                <!-- 
                 <button onclick="addGuitarToJson()">Add Guitar</button>
-                <button onclick="addTheGuitar()">Add the guitar (server side)</button>
+                -->
+                <button onclick="addTheGuitar()">Add the guitar</button>
             </div>
         </div>
         <script>
@@ -120,11 +122,11 @@
                 try {
                     let response = await fetch(host + "/inventory/add", request);
                     if (response.ok) {
-                        alert("The guitar was added successfully!");
-                        console.log("The guitar was added successfully!");
+                        alert("The guitar was added to the system");
+                        console.log("The guitar was added to the system");
                     } else {
                         console.error("Response status:", response.status);
-                        alert("Failed to add the guitar. Please try again.");
+                        alert("Something went wrong. Please try again or contact the customer support team.");
                     }
                 } catch (error) {
                     console.error('Error:', error);
